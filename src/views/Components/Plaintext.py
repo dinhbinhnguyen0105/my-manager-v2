@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QFrame,  QVBoxLayout, QLabel, QPlainTextEdit
 
 class Plaintext(QFrame):
