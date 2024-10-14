@@ -29,12 +29,10 @@ class LineEdit(QFrame):
             self.label_widget = QLabel(label, self)
             self.label_widget.setProperty("class", "label")
             main_layout.addWidget(self.label_widget)
-            main_layout.addWidget(self.label_widget)
         self.lineedit_widget = QLineEdit(self)
         self.lineedit_widget.setProperty("class", "lineedit")
         if place_holder:
             self.lineedit_widget.setPlaceholderText(place_holder)
-        self.lineedit_widget.textChanged.connect(self.handle_lineedit_changed)
     
         main_layout.addWidget(self.lineedit_widget)
     

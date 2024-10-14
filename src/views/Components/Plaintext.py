@@ -5,23 +5,39 @@ class Plaintext(QFrame):
     e_text = pyqtSignal(str)
     def __init__(self, payload, parent=None):
         super().__init__(parent)
-        if "class" in payload.keys(): self._class = payload["class"]
-        else: self._class = None
-        if "label" in payload.keys(): self._label = payload["label"]
-        else: self._label = "undefined"
+        if "class" in payload.keys(): _class = payload["class"]
+        else: _class = None
+        if "label" in payload.keys(): label = payload["label"]
+        else: label = False
+        if "place_holder" in payload.keys(): place_holder = payload["place_holder"]
+        else: place_holder = False
+        if "id" in payload.keys(): id = payload["id"]
+        else: id = False
+        if "user-data" in payload.keys(): user_data = payload["user-data"]
+        else: user_data = False
         
-        self.setProperty("class", self._class)
+        
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0,0,0,0)
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
 
-        label_widget = QLabel(self._label, self)
-        label_widget.setProperty("class", "label")
+        self.setProperty("class", _class)
+        if id: self.setObjectName(id)
+        if user_data: self.setProperty("user-data", payload["user-data"])
+
+        if label:
+            self.label_widget = QLabel(label, self)
+            self.label_widget.setProperty("class", "label")
+            main_layout.addWidget(self.label_widget)
+            main_layout.addWidget(self.label_widget)
+            main_layout.addWidget(self.label_widget)
+
         self.plaintext_widget = QPlainTextEdit(self)
         self.plaintext_widget.setProperty("class", "plaintext")
+        if place_holder:
+            self.plaintext_widget.setPlaceholderText(place_holder)
         
-        main_layout.addWidget(label_widget)
         main_layout.addWidget(self.plaintext_widget)
     
     def set_value(self, text):

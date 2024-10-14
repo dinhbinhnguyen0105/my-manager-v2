@@ -1,24 +1,53 @@
-import platform, os, subprocess
+import platform, os, subprocess, sys
 from pathlib import Path
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QFrame, QStackedWidget
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QMouseEvent, QCloseEvent, QWheelEvent
 
+MY_DIR = os.path.abspath(os.path.dirname(__file__))
+SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir, ))
+ASSETS_DIR = os.path.abspath(os.path.join(SRC_DIR, os.path.pardir, "assets"))
+sys.path.append(SRC_DIR)
+from views.utils.widget_handler import WidgetHandler
+
 class Imagebox(QFrame):
-    def __init__(self, parent=None):
+    def __init__(self, payload, parent=None):
         super().__init__(parent)
-        self.prev_point, self.curr_point, self.slide, self.images_count, self.image_folder, self.urls = 0, 0, 0, 0, None, []
-        self.setProperty("class", "image-box")
+        if "class" in payload.keys(): _class = payload["class"]
+        else: _class = None
+        if "label" in payload.keys(): label = payload["label"]
+        else: label = False
+        if "id" in payload.keys(): id = payload["id"]
+        else: id = False
+        if "user-data" in payload.keys(): user_data = payload["user-data"]
+        else: user_data = False
+
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0,0,0,0)
         main_layout.setSpacing(0)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(main_layout)
+        
+        self.setProperty("class", _class)
+        if id: self.setObjectName(id)
+        if user_data: self.setProperty("user-data", payload["user-data"])
+        self.prev_point, self.curr_point, self.slide, self.images_count, self.image_folder, self.urls = 0, 0, 0, 0, None, []
+        WidgetHandler.add_class(self, "image-box")
+        if label:
+            self.label_widget = QLabel(label, self)
+            self.label_widget.setProperty("class", "label")
+            main_layout.addWidget(self.label_widget)
+            main_layout.addWidget(self.label_widget)
+
         self.main_widget = QStackedWidget(self)
         self.main_widget.setContentsMargins(0,0,0,0)
         main_layout.addWidget(self.main_widget, alignment=Qt.AlignmentFlag.AlignCenter)
         
-    def set_images(self, urls):
+    def set_value(self, urls):
+        img_widgets = WidgetHandler.find_widgets_by_class(self, Image, "image")
+        for img_widget in img_widgets:
+            img_widget.setParent(None)
+            img_widget.deleteLater()
         self.img_count = len(urls)
         self.urls = urls
         for url in self.urls:
@@ -55,8 +84,17 @@ class Image(QLabel):
             transformMode=Qt.TransformationMode.SmoothTransformation
         )
         self.setPixmap(self.pixmap)
+    
+    def set_value(self, url):
+        self.pixmap = QPixmap(url)
+        self.pixmap = self.pixmap.scaled(
+            self.parent().size(),
+            aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio,
+            transformMode=Qt.TransformationMode.SmoothTransformation
+        )
+        self.setPixmap(self.pixmap)
 
-    def getImage(self):
+    def get_value(self):
         return self.url
     
     def mousePressEvent(self, ev: QMouseEvent | None) -> None:

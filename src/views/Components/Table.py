@@ -63,17 +63,13 @@ class Table(QFrame):
         self.table_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         main_layout.addWidget(self.table_view)
 
-        btn = QPushButton("click me")
-        btn.clicked.connect(self.on_btn_clicked)
-        main_layout.addWidget(btn)
-
     def set_model(self, payload):
         if "headers" not in payload.keys(): return False
         if "data" not in payload.keys(): return False
-        self.headers = payload.get("header")
+        self.headers = payload.get("headers")
         self.data = payload.get("data")
         self.model.clear()
-        self.model.setHorizontalHeaderLabels([headers[1] for headers in payload.get("headers")])
+        self.model.setHorizontalHeaderLabels([headers[1].title() for headers in payload.get("headers")])
         for row in payload.get("data"):
             items = []
             header_user_data = [headers[0] for headers in payload.get("headers")]
@@ -86,19 +82,12 @@ class Table(QFrame):
             self.model.appendRow(items)
         self.model.layoutChanged.emit()
     
-    def set_userdata_for_header(self):
-        pass
-    
-    def filter_table(self, payload):
-        payload = [
-            { "coulmn_user_data": "" }
-        ]
-        pass
-
-    def on_btn_clicked(self):
-        for headers in self.headers:
-            headers[0]
-        pass
+    def filter_table(self, payload:list):
+        while len(payload):
+            _filter = payload.pop(0)
+            for index, header in enumerate(self.headers):
+                if _filter[0] == header[0]:
+                    self.proxy_model.setFilterForColumn(index, _filter[1])
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication
@@ -128,7 +117,7 @@ if __name__ == "__main__":
                     "id": "re.r.101224.481",
                     "provide": "lamdong",
                     "district": "dalat",
-                "ward": "ward_3",
+                "ward": "ward_1",
                     "street": "tr\u1ea7n ph\u00fa",
                     "type": "rent",
                     "category": "category_homestay",
@@ -145,7 +134,7 @@ if __name__ == "__main__":
                     "option": "real-estate",
                     "date": "10-12-24",
                     "images": "/Users/dinhbinh/Dev/my-manager/my-manager/bin/db/real-estate/images/re.r.101224.481",
-                    "id": "re.r.101224.481",
+                    "id": "re.r.101224.111",
                     "provide": "lamdong",
                     "district": "dalat",
                 "ward": "ward_3",
@@ -164,5 +153,9 @@ if __name__ == "__main__":
             ]
     })
     window.show()
+    window.filter_table([
+        ("id", "111"),
+        ("ward", "2")
+    ])
 
     sys.exit(app.exec_())
