@@ -66,7 +66,7 @@ class Header(QFrame):
                 "id": f"header__option__{name_of_data}",
                 "class": "header__option",
                 "user-data": f"{name_of_data}",
-                "label": name
+                "label": name.title()
             })
         self.options_widget.set_options(options)
         self.options_widget.set_value(0)

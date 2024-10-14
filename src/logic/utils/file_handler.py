@@ -2,6 +2,8 @@ import os
 MY_DIR = os.path.abspath(os.path.dirname(__file__))
 SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir, os.path.pardir, ))
 DB_DIR = os.path.abspath(os.path.join(SRC_DIR, os.path.pardir, "bin", "db"))
+DB_PRODUCT_DIR = os.path.abspath(os.path.join(DB_DIR, "products"))
+DB_TEMPLATE_DIR = os.path.abspath(os.path.join(DB_DIR, "templates"))
 
 class FileHandler():
     @staticmethod
@@ -22,7 +24,7 @@ class FileHandler():
     @staticmethod
     def get_file_paths_of_data():
         results = []
-        for root, dirs, files in os.walk(DB_DIR):
+        for root, dirs, files in os.walk(DB_PRODUCT_DIR):
             for file in files:
                 file_ext = file.split(".")[-1].lower()
                 if file_ext == "json":
@@ -31,7 +33,7 @@ class FileHandler():
 
     @staticmethod
     def get_path_of_file_data(name):
-        for root, dirs, files in os.walk(DB_DIR):
+        for root, dirs, files in os.walk(DB_PRODUCT_DIR):
             for file in files:
                 file_name = file.split(".")[0].lower() 
                 file_ext = file.split(".")[-1].lower()
@@ -40,7 +42,7 @@ class FileHandler():
     @staticmethod
     def get_paths_of_file_data():
         file_paths = []
-        for root, dirs, files in os.walk(DB_DIR):
+        for root, dirs, files in os.walk(DB_PRODUCT_DIR):
             for file in files:
                 file_ext = file.split(".")[-1].lower()
                 if file_ext == "json":
@@ -50,7 +52,7 @@ class FileHandler():
     @staticmethod
     def get_file_names_of_data():
         results = []
-        for root, dirs, files in os.walk(DB_DIR):
+        for root, dirs, files in os.walk(DB_PRODUCT_DIR):
             for file in files:
                 file_name = file.split(".")[0].lower() 
                 file_ext = file.split(".")[-1].lower()
