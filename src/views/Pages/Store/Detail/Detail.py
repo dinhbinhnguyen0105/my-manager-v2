@@ -2,9 +2,9 @@ import os
 from PyQt5.QtWidgets import QVBoxLayout, QFrame
 from PyQt5.QtCore import Qt
 
-from Header.Header import Header
-from Body.Body import Body
-from Footer.Footer import Footer
+from .Header.Header import Header
+from .Body.Body import Body
+from .Footer.Footer import Footer
 MY_DIR = os.path.abspath(os.path.dirname(__file__))
 SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir,os.path.pardir, os.path.pardir))
 ASSETS_DIR = os.path.abspath(os.path.join(SRC_DIR, os.path.pardir, "assets"))

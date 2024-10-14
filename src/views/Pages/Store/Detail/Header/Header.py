@@ -33,13 +33,13 @@ class Header(QFrame):
         self.edit_btn_widget.setIcon(edit_icon)
         self.edit_btn_widget.clicked.connect(self.on_edit_icon_clicked)
         
-        self.block_btn_widget = QPushButton(self)
-        self.block_btn_widget.setObjectName("detail__header__block-btn")
-        self.block_btn_widget.setProperty("class", "detail__header__btn detail__header__block-btn")
-        self.block_btn_widget.setProperty("user-data", "block")
-        block_icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "block.svg")))
-        self.block_btn_widget.setIcon(block_icon)
-        self.block_btn_widget.clicked.connect(self.on_block_btn_clicked)
+        self.status_btn_widget = QPushButton(self)
+        self.status_btn_widget.setObjectName("detail__header__status-btn")
+        self.status_btn_widget.setProperty("class", "detail__header__btn detail__header__status-btn detail__header__status-btn--block")
+        self.status_btn_widget.setProperty("user-data", "status")
+        status_icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "block.svg")))
+        self.status_btn_widget.setIcon(status_icon)
+        self.status_btn_widget.clicked.connect(self.on_status_btn_clicked)
         
         self.delete_btn_widget = QPushButton(self)
         self.delete_btn_widget.setObjectName("detail__header__delete-btn")
@@ -56,14 +56,22 @@ class Header(QFrame):
         main_layout.addWidget(self.add_btn_widget)
         main_layout.addItem(QSpacerItem(40, 10, QSizePolicy.Expanding, QSizePolicy.Minimum))
         main_layout.addWidget(self.edit_btn_widget)
-        main_layout.addWidget(self.block_btn_widget)
+        main_layout.addWidget(self.status_btn_widget)
         main_layout.addWidget(v_line)
         main_layout.addWidget(self.delete_btn_widget)
 
+    def set_disable(self, is_disable):
+        if is_disable:
+            self.edit_btn_widget.setDisabled(True)
+            self.status_btn_widget.setDisabled(True)
+            self.delete_btn_widget.setDisabled(True)
+        else:
+            self.edit_btn_widget.setDisabled(False)
+            self.status_btn_widget.setDisabled(False)
+            self.delete_btn_widget.setDisabled(False)
 
-        
     
     def on_add_btn_clicked(self): pass
     def on_edit_icon_clicked(self): pass
     def on_delete_btn_clicked(self): pass
-    def on_block_btn_clicked(self): pass
+    def on_status_btn_clicked(self): pass

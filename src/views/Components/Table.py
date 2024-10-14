@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal, QSortFilterProxyModel, Qt
 from PyQt5.QtWidgets import QFrame,  QVBoxLayout, QLabel, QTableView, QPushButton, QAbstractItemView
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QColor
 
 
 class MultiColumnFilterProxyModel(QSortFilterProxyModel):
@@ -42,8 +42,10 @@ class Table(QFrame):
         else: self.headers = None
         if "data" in payload.keys(): self.data = payload.get("data")
         else: self.data = None
-
+        if "id" in payload.keys(): _id = payload.get("id")
+        else: _id = False
         if _class: self.setProperty("class", _class)
+        if _id: self.setObjectName(_id)
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0,0,0,0)
         main_layout.setSpacing(0)
@@ -62,10 +64,15 @@ class Table(QFrame):
         self.table_view.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_view.setSelectionBehavior(QAbstractItemView.SelectRows)
         main_layout.addWidget(self.table_view)
+        # self.table_view.selectionChanged(selected, deselected)
+        # self.table_view.selectionModel().selectionChanged.connect(lambda selected, deselected: print(selected, deselected) )
+
 
     def set_model(self, payload):
-        if "headers" not in payload.keys(): return False
+        if "headers" not in payload.keys():return False
         if "data" not in payload.keys(): return False
+        if not payload.get("headers"): return False
+        if not payload.get("data"): return False
         self.headers = payload.get("headers")
         self.data = payload.get("data")
         self.model.clear()
@@ -75,19 +82,47 @@ class Table(QFrame):
             header_user_data = [headers[0] for headers in payload.get("headers")]
             while len(header_user_data):
                 user_data = header_user_data.pop(0)
+                if "status" in row.keys() and row.get("status") == "unavailable": is_available = False
+                else: is_available = True
+                text = "undefined"
                 for key in row.keys():
                     if user_data == key:
-                        items.append(QStandardItem(str(row.get(key))))
-                        continue
+                        text = str(row.get(user_data))
+                        if key == "id" or\
+                            key == "type" or\
+                            key == "category" or\
+                            key == "building_line" or\
+                            key == "furniture" or\
+                            key == "legal" :
+                            text = text.upper()
+                        elif key == "street" or\
+                            key == "ward":
+                            text = text.title()
+                        break
+                item_widget = QStandardItem()
+                item_widget.setText(text)
+                item_widget.setData(key, Qt.UserRole)
+                if not is_available: item_widget.setBackground(QColor(253, 116, 29))
+                items.append(item_widget)
             self.model.appendRow(items)
         self.model.layoutChanged.emit()
-    
+        
     def filter_table(self, payload:list):
         while len(payload):
             _filter = payload.pop(0)
             for index, header in enumerate(self.headers):
                 if _filter[0] == header[0]:
                     self.proxy_model.setFilterForColumn(index, _filter[1])
+
+    def clear_filter(self):
+        for index in range(self.proxy_model.columnCount()):
+            self.proxy_model.setFilterForColumn(index, '')
+
+    # self.table_view.selectionModel().currentChanged.connect(self.on_current_changed)
+    # def on_current_changed(self, cur, prev):
+    #     print(f"current: row[{cur.row()}] - col[{cur.column()}]")
+    #     print(f"prev: row[{prev.row()}] - col[{prev.column()}]")
+        
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication

@@ -33,5 +33,13 @@ class Footer(QFrame):
         main_layout.addWidget(self.default_btn_widget)
         main_layout.addWidget(self.random_btn_widget)
     
+    def set_disable(self, is_disable):
+        if is_disable:
+            self.default_btn_widget.setDisabled(True)
+            self.random_btn_widget.setDisabled(True)
+        else:
+            self.default_btn_widget.setDisabled(False)
+            self.random_btn_widget.setDisabled(False)
+
     def on_default_btn_clicked(self): pass
     def on_random_btn_clicked(self): pass

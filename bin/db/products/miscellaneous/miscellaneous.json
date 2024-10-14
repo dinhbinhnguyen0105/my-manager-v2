@@ -1,0 +1,19 @@
+{
+    "misc": [
+        {
+            "option": "miscellaneous",
+            "images": "/Users/dinhbinh/Dev/my-manager/my-manager/bin/db/miscellaneous/images/misc.101024.529",
+            "title": "1",
+            "id": "misc.101024.530",
+            "description": "2"
+        },
+        {
+            "option": "miscellaneous",
+            "images": "/Users/dinhbinh/Dev/my-manager/my-manager/bin/db/miscellaneous/images/misc.101024.529",
+            "title": "3",
+            "description": "4",
+            "id": "misc.101024.530",
+            "tags": []
+        }
+    ]
+}

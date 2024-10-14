@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QFrame,  QVBoxLayout, QLabel, QLineEdit
 
-class LineEdit(QFrame):
+class Lineedit(QFrame):
     e_text = pyqtSignal(str)
     def __init__(self, payload, parent=None):
         super().__init__(parent)
