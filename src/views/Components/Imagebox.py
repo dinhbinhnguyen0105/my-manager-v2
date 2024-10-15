@@ -27,6 +27,8 @@ class Imagebox(QFrame):
         main_layout.setSpacing(0)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setLayout(main_layout)
+
+        self.urls = []
         
         self.setProperty("class", _class)
         if id: self.setObjectName(id)
@@ -42,6 +44,9 @@ class Imagebox(QFrame):
         self.main_widget = QStackedWidget(self)
         self.main_widget.setContentsMargins(0,0,0,0)
         main_layout.addWidget(self.main_widget, alignment=Qt.AlignmentFlag.AlignCenter)
+    
+    def get_value(self):
+        return self.urls
         
     def set_value(self, urls):
         img_widgets = WidgetHandler.find_widgets_by_class(self, Image, "image")

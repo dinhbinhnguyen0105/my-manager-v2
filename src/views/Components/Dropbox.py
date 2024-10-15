@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QDragEnterEvent, QDragMoveEvent, QDropEvent
 
 class Dropbox(QLabel):
-    e_dropped_urls = pyqtSignal(list)
+    event_dropped_urls = pyqtSignal(list)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setAcceptDrops(True)
@@ -36,4 +36,4 @@ class Dropbox(QLabel):
                     urls.append(str(url.toLocalFile()))
         else:
             a0.ignore()
-        self.e_dropped_urls.emit(urls)
+        self.event_dropped_urls.emit(urls)
