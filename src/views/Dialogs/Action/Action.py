@@ -7,7 +7,7 @@ SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir,os.
 sys.path.append(SRC_DIR)
 from views.utils.widget_handler import WidgetHandler
 
-class Basic(QFrame):
+class Action(QFrame):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "dialog__item__action")

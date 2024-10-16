@@ -102,7 +102,7 @@ class Detail(QFrame):
         main_layout.addWidget(self.price_widget, 2, 1, 1, 1)
     
     def showEvent(self, e):
-        self.event_current_detail.emit(self.data)
+        self.event_current_detail.emit(self.get_value())
     
     def set_data(self, current_widget):
         self.data = {

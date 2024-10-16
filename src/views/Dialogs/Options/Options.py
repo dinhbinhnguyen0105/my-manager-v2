@@ -59,7 +59,7 @@ class Options(QFrame):
         self.option_misc_widget = QPushButton(self)
         self.option_misc_widget.setObjectName("option__misc")
         self.option_misc_widget.setProperty("class", "option__misc dialog__item__option")
-        self.option_misc_widget.setProperty("user-data", "misc")
+        self.option_misc_widget.setProperty("user-data", "miscellaneous")
         self.option_misc_widget.setProperty("option-index", 3)
         self.option_misc_widget.setText("Misc")
         _ = partial(self.on_option_clicked, self.option_misc_widget)

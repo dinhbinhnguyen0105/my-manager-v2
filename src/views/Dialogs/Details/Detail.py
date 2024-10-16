@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QFrame, QVBoxLayout
 from PyQt5.QtCore import Qt, pyqtSignal
 
 from .Realestate.Realestate import Realestate
+from .Misc.Misc import Misc
+
 MY_DIR = os.path.abspath(os.path.dirname(__file__))
 SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir,os.path.pardir,os.path.pardir,))
 sys.path.append(SRC_DIR)
@@ -22,8 +24,11 @@ class Detail(QFrame):
 
         self.real_estate_widget = Realestate(self)
         self.real_estate_widget.event_payload_changed.connect(lambda e: self.event_current_details.emit(e))
+        self.miscellaneous_widget = Misc(self)
+
         
         main_layout.addWidget(self.real_estate_widget)
+        main_layout.addWidget(self.miscellaneous_widget)
     
     def showEvent(self, e):
         self.set_detail()
