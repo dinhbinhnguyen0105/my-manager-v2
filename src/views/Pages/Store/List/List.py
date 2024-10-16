@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QVBoxLayout, QFrame
 from PyQt5.QtCore import Qt
 from functools import partial
 
-from .Header.Header import Header
-from .Body.Body import Body
+from Header.Header import Header
+from Body.Body import Body
 
 MY_DIR = os.path.abspath(os.path.dirname(__file__))
 SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir,os.path.pardir, os.path.pardir))
@@ -28,20 +28,23 @@ class List(QFrame):
 
         self.header = Header(self)
         self.body = Body(self)
+        self.header.options_widget.event_current_value.connect(self.set_body_table)
         self.set_body_table()
-        self.header.options_widget.event_option_active_changed.connect(self.set_body_table)
+        # self.header.options_widget.event_option_active_changed.connect(self.set_body_table)
         main_layout.addWidget(self.header)
         main_layout.addWidget(self.body)
     
     def set_body_table(self, option=False):
-        if not option: option = self.header.get_value().get("option")
+        print(self.header.get_value())
+        return
+        if not option: option = self.header.get_value().get("options")
         self.body.set_table(option)
         self.body.table.clear_filter()
-        input_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "header__search__input")
-        for input_widget in input_widgets:
-            _ = partial(self.set_search_payload, input_widget)
-            input_widget.lineedit_widget.setText("")
-        self.handle_search_payload_changed()
+        # input_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "header__search__input")
+        # for input_widget in input_widgets:
+        #     _ = partial(self.set_search_payload, input_widget)
+        #     input_widget.lineedit_widget.setText("")
+        # self.handle_search_payload_changed()
 
     def handle_search_payload_changed(self):
         input_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "header__search__input")

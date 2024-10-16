@@ -1,6 +1,6 @@
 import os, sys
 from PyQt5.QtWidgets import QVBoxLayout, QFrame
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 
 from .Options.Options import Options
 from .Search.Search import Search
@@ -10,8 +10,10 @@ SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir,os.
 ASSETS_DIR = os.path.abspath(os.path.join(SRC_DIR, os.path.pardir, "assets"))
 sys.path.append(SRC_DIR)
 from logic.utils.file_handler import FileHandler
+from views.utils.widget_handler import WidgetHandler
 
 class Header(QFrame):
+    event_current_value = pyqtSignal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "store__list__header")
@@ -19,73 +21,122 @@ class Header(QFrame):
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0,0,0,0)
         main_layout.setSpacing(0)
-        self.setLayout(main_layout)
         main_layout.setAlignment(Qt.AlignTop)
-        self.option = False
-        self.options_widget = Options(self)
-        self.set_option_widget()
-        self.search_widget = Search(self)
-        self.set_expand_input_widget(self.option)
-        self.options_widget.event_option_active_changed.connect(self.set_expand_input_widget)
-        
+        self.setLayout(main_layout)
 
+        self.data = {}
+        
+        self.options_widget = Options(self)
+        self.options_widget.event_current_value.connect(self.on_options_changed)
+        self.search_widget = Search(self)
+        self.search_widget.event_current_value.connect(self.set_data)
         main_layout.addWidget(self.options_widget)
         main_layout.addWidget(self.search_widget)
-    
-    def set_expand_input_widget(self, option):
-        if option == "real-estate":
-            headers = [
-                ("date", "Date"),
-                ("type", "Type"),
-                ("ward", "Ward"),
-                ("street", "Street"),
-                ("category", "Category"),
-                ("area", "Area"),
-                ("price", "Price"),
-                ("building_line", "Building line"),
-                ("function", "Function"),
-                ("furniture", "Furniture"),
-                ("legal", "Legal"),
-            ]
-        elif option == "miscellaneous":
-            headers = [
-                ("title", "title"),
-                ("description", "description")
-            ]
-        else: raise CustomError("Invalid option")
 
-        self.search_widget.set_expand_inputs_widget(headers)
+    def set_data(self, payload):
+        self.data = {
+            **self.options_widget.get_value(),
+            **self.data,
+            **payload
+        }
+        self.event_current_value.emit(self.data)
+        return self.data
     
-    def set_option_widget(self):
-        names_of_data = FileHandler.get_file_names_of_data()
-        options = []
-        for name_of_data in names_of_data:
-            if name_of_data == "real-estate": name = "real estate"
-            elif name_of_data == "miscellaneous": name = "miscellaneous"
-            options.append({
-                "id": f"header__option__{name_of_data}",
-                "class": "header__option",
-                "user-data": f"{name_of_data}",
-                "label": name.title()
-            })
-        self.options_widget.set_options(options)
-        self.options_widget.set_value(0)
-        self.option = self.options_widget.get_value()
-
     def get_value(self):
         return {
-            "option": self.option
+            **self.options_widget.get_value(),
+            **self.data,
         }
 
-class CustomError(Exception):
-    pass
+    def on_options_changed(self, payload):
+        if payload.get("options") == "real-estate":
+            input_widget_info = [
+                {
+                    "id": "header__search__date",
+                    "class": "header__search__date header__search__input",
+                    "label": "date: ".capitalize(),
+                    "user-data": "date"
+                },
+                {
+                    "id": "header__search__type",
+                    "class": "header__search__type header__search__input",
+                    "label": "type: ".capitalize(),
+                    "user-data": "type"
+                },
+                {
+                    "id": "header__search__ward",
+                    "class": "header__search__ward header__search__input",
+                    "label": "ward: ".capitalize(),
+                    "user-data": "ward"
+                },
+                {
+                    "id": "header__search__street",
+                    "class": "header__search__street header__search__input",
+                    "label": "street: ".capitalize(),
+                    "user-data": "street"
+                },
+                {
+                    "id": "header__search__category",
+                    "class": "header__search__category header__search__input",
+                    "label": "category: ".capitalize(),
+                    "user-data": "category"
+                },
+                {
+                    "id": "header__search__area",
+                    "class": "header__search__area header__search__input",
+                    "label": "area: ".capitalize(),
+                    "user-data": "area"
+                },
+                {
+                    "id": "header__search__buildingline",
+                    "class": "header__search__buildingline header__search__input",
+                    "label": "building line: ".capitalize(),
+                    "user-data": "buildingline"
+                },
+                {
+                    "id": "header__search__function",
+                    "class": "header__search__function header__search__input",
+                    "label": "function: ".capitalize(),
+                    "user-data": "function"
+                },
+                {
+                    "id": "header__search__legal",
+                    "class": "header__search__legal header__search__input",
+                    "label": "legal: ".capitalize(),
+                    "user-data": "legal"
+                },
+                {
+                    "id": "header__search__price",
+                    "class": "header__search__price header__search__input",
+                    "label": "price: ".capitalize(),
+                    "user-data": "price"
+                }
+            ]
+        elif payload.get("options") == "miscellaneous":
+            input_widget_info = [
+                {
+                    "id": "header__search__title",
+                    "class": "header__search__title header__search__input",
+                    "label": "title: ".capitalize(),
+                    "user-data": "title"
+                },
+                {
+                    "id": "header__search__desciption",
+                    "class": "header__search__desciption header__search__input",
+                    "label": "desciption: ".capitalize(),
+                    "user-data": "desciption"
+                },
+            ]
+        self.search_widget.search_expand_widget.set_input_widgets(input_widget_info)
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication
     import sys
+
     app = QApplication(sys.argv)
 
-    header = Header()
-    header.show()
+    sb = Header()
+    sb.event_current_value.connect(lambda e: print(e))
+    sb.show()
 
     sys.exit(app.exec_())

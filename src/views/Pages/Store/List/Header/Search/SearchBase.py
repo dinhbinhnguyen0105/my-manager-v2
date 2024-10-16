@@ -9,8 +9,7 @@ sys.path.append(SRC_DIR)
 from views.Components.Lineedit import Lineedit
 
 class SearchBase(QFrame):
-    event_expand_btn_clicked = pyqtSignal(bool)
-    event_search_base_payload = pyqtSignal(dict)
+    event_current_value = pyqtSignal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "header__search__base")
@@ -27,7 +26,7 @@ class SearchBase(QFrame):
             "label": "ID: ",
             "user-data": "id"
         })
-        self.id_input_widget.lineedit_widget.textChanged.connect(self.on_id_input_changed)
+        self.id_input_widget.event_current_value.connect(lambda e: self.event_current_value.emit(e))
 
         self.expand_btn_widget = QPushButton(self)
         self.expand_btn_widget.setProperty("class", "header__search__expand-button header__search__btn")
@@ -74,9 +73,18 @@ class SearchBase(QFrame):
         else:
             icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "arrow-up.svg")))
         self.expand_btn_widget.setIcon(icon)
-        self.event_expand_btn_clicked.emit(self.expand_status)
-    def on_id_input_changed(self, e):
-        self.event_search_base_payload.emit({ "id": e })
+    
     def on_refresh_btn_clicked(self): pass
     def on_upload_btn_clicked(self): pass
     def on_download_button_clicked(self): pass
+
+if __name__ == "__main__":
+    from PyQt5.QtWidgets import QApplication
+    import sys
+
+    app = QApplication(sys.argv)
+
+    sb = SearchBase()
+    sb.show()
+
+    sys.exit(app.exec_())

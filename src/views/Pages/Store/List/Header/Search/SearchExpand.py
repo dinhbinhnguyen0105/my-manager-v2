@@ -9,7 +9,7 @@ from views.Components.Lineedit import Lineedit
 from views.utils.widget_handler import WidgetHandler
 
 class SearchExpand(QFrame):
-    event_search_expand_payload = pyqtSignal(dict)
+    event_current_value = pyqtSignal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "header__search__expand")
@@ -19,37 +19,50 @@ class SearchExpand(QFrame):
         main_layout.setSpacing(0)
         main_layout.setAlignment(Qt.AlignTop)
         self.setLayout(main_layout)
-
-        self.input_widgets = []
     
     def set_input_widgets(self, payload):
-        input_widgets = self.findChildren(Lineedit)
+        input_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "header__search__input")
         for input_widget in input_widgets:
             input_widget.setParent(None)
             input_widget.deleteLater()
-        row = 0
-        col = 0
-        for index, input in enumerate(payload):
-            input_widget = Lineedit({
-                "class": f"header__search__{input[0]} header__search__input",
-                "id": f"header__search__{input[0]}",
-                "user-data": input[0],
-                "label": input[1],
-            })
-            input_widget.lineedit_widget.textChanged.connect(self.on_text_changed)
+        
+        row, col = 0, 0
+        for index, widget_info in enumerate(payload):
+            input_widget = Lineedit(widget_info, self)
+            WidgetHandler.add_class(input_widget, "header__search__input")
+            input_widget.event_current_value.connect(
+                lambda e: self.event_current_value.emit(self.get_value())
+            )
             if index % 4 == 0:
                 row += 1
                 col = 0
             self.layout().addWidget(input_widget, row, col, 1, 1)
             col += 1
-            self.input_widgets.append(input_widget)
-    
-    def on_text_changed(self, e):
-        _ = {}
-        try:
-            for input_widget in self.input_widgets:
-                _[input_widget.property("user-data")] = input_widget.get_value()
-            self.event_search_expand_payload.emit(_)
-        except: pass
-        # input_widgets = WidgetHandler.find_widgets_by_class(self, Lineedit, "header__search__input")
-        
+            
+    def get_value(self):
+        data = {}
+        input_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "header__search__input")
+        for input_widget in input_widgets:
+            data = {
+                **data,
+                **input_widget.get_value()
+            }
+        return data
+            
+if __name__ == "__main__":
+    from PyQt5.QtWidgets import QApplication
+    import sys
+    app = QApplication(sys.argv)
+
+    se = SearchExpand()
+    se.set_input_widgets([
+        {
+            "id": "item__type__assignment",
+            "class": "item__type__assignment",
+            "user-data": "assignment",
+            "label": "assignment".capitalize(),
+        },
+    ])
+    se.show()
+
+    sys.exit(app.exec_())
