@@ -27,17 +27,19 @@ class Item(QDialog):
         self.detail_widget = Detail(self)
         self.basic_widget = Basic(self)
         self.options_widget.event_current_option.connect(self.set_details)
+        self.detail_widget.real_estate_widget.type_widget.event_current_type.connect(self.set_basic)
 
         main_layout.addWidget(self.options_widget)
         main_layout.addWidget(self.image_widget)
         main_layout.addWidget(self.basic_widget)
         main_layout.addWidget(self.detail_widget)
 
+    def set_basic(self):
 
+        pass
     
     def set_details(self, option):
-        print(option)
-        # self.basic_widget.set_value(option)
+        self.detail_widget.set_detail(option)
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication

@@ -32,7 +32,7 @@ WARD_OPTIONS = [
 ]
 
 class Location(QFrame):
-    event_current_location = pyqtSignal(list)
+    event_current_location = pyqtSignal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "real-estate__location")
@@ -43,7 +43,12 @@ class Location(QFrame):
         self.setLayout(main_layout)
         main_layout.setAlignment(Qt.AlignTop)
 
-        self.location_payload = {}
+        self.data = {
+            "provide": "lamdong",
+            "district": "dalat",
+            "ward": "",
+            "street": ","
+        }
 
         self.provide_widget = Combobox({
             "class": "real-estate__location real-estate__location__provide",
@@ -52,7 +57,7 @@ class Location(QFrame):
             "label": "Provide: ",
         }, self)
         self.provide_widget.set_option(PROVIDE_OPTIONS)
-        _ = partial(self.on_combobox_changed, self.provide_widget)
+        _ = partial(self.set_data, self.provide_widget)
         self.provide_widget.combobox_widget.currentIndexChanged.connect(_)
         self.provide_widget.setDisabled(True)
         self.district_widget = Combobox({
@@ -63,7 +68,7 @@ class Location(QFrame):
         }, self)
         self.district_widget.set_option(DISTRICT_OPTIONS)
         self.district_widget.setDisabled(True)
-        _ = partial(self.on_combobox_changed, self.provide_widget)
+        _ = partial(self.set_data, self.district_widget)
         self.provide_widget.combobox_widget.currentIndexChanged.connect(_)
         self.ward_widget = Combobox({
             "class": "real-estate__location real-estate__location__ward",
@@ -72,7 +77,7 @@ class Location(QFrame):
             "label": "Ward: ",
         }, self)
         self.ward_widget.set_option(WARD_OPTIONS)
-        _ = partial(self.on_combobox_changed, self.provide_widget)
+        _ = partial(self.set_data, self.ward_widget)
         self.provide_widget.combobox_widget.currentIndexChanged.connect(_)
         self.street_widget = Lineedit({
             "class": "real-estate__location real-estate__location__street",
@@ -80,17 +85,20 @@ class Location(QFrame):
             "user-data": "street",
             "label": "Street: ",
         }, self)
-        self.street_widget.lineedit_widget.textChanged.connect(self.on_lineedit_changed)
+        _ = partial(self.set_data, self.street_widget)
+        self.street_widget.lineedit_widget.textChanged.connect(_)
         
         main_layout.addWidget(self.provide_widget, 0, 0, 1, 1)
         main_layout.addWidget(self.district_widget, 0, 1, 1, 3)
         main_layout.addWidget(self.ward_widget, 1, 0, 1, 1)
         main_layout.addWidget(self.street_widget, 1, 1, 1, 3)
     
-    def on_combobox_changed(self, index, w):
-        print(index)
-        print(w)
-        pass
+    def showEvent(self, e):
+        self.set_data()
     
-    def on_lineedit_changed(self):
-        pass
+    def set_data(self, current_widget):
+        self.data = {
+            **self.data,
+            **{ current_widget.property("user-data") : current_widget.get_value()}
+        }
+        self.event_current_location.emit(self.data)

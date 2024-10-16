@@ -11,7 +11,7 @@ from views.Components.Lineedit import Lineedit
 from views.Components.Combobox import Combobox
 
 class Type(QFrame):
-    event_current_type = pyqtSignal(str)
+    event_current_type = pyqtSignal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "real-estate__type")
@@ -61,7 +61,7 @@ class Type(QFrame):
         for option_widget in option_widgets:
             if option_widget.property("user-data") == option:
                 WidgetHandler.add_class(option_widget, "activated")
-                self.event_current_type.emit(option)
+                self.event_current_type.emit({ "type": option})
                 return True
             
     def on_option_clicked(self, current_widget):
@@ -69,7 +69,7 @@ class Type(QFrame):
         if activated_button_widgets:
             WidgetHandler.remove_class(activated_button_widgets[0], "activated")
         WidgetHandler.add_class(current_widget, "activated")
-        self.event_current_type.emit(current_widget.property("user-data"))
+        self.event_current_type.emit({ "type": current_widget.property("user-data")})
         self.setStyleSheet(self.styleSheet())
     
     def get_value(self):

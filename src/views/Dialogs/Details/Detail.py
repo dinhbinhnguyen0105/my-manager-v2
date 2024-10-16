@@ -1,6 +1,6 @@
 import os, sys
 from PyQt5.QtWidgets import QFrame, QVBoxLayout
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 
 from .Realestate.Realestate import Realestate
 MY_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -9,6 +9,7 @@ sys.path.append(SRC_DIR)
 from views.utils.widget_handler import WidgetHandler
 
 class Detail(QFrame):
+    event_data = pyqtSignal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "dialog__item__details")
@@ -20,18 +21,23 @@ class Detail(QFrame):
         main_layout.setAlignment(Qt.AlignTop)
 
         self.real_estate_widget = Realestate(self)
+        self.real_estate_widget.event_payload_changed.connect(lambda e: print(e))
         
-
         main_layout.addWidget(self.real_estate_widget)
     
     def showEvent(self, e):
-        self.set_value()
+        self.set_detail()
     
-    def set_value(self, option="real-estate"):
+    def set_detail(self, option="real-estate"):
         detail_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "item__detail")
         for detail_widget in detail_widgets:
             if detail_widget.property("user-data") == option: detail_widget.show()
             else: detail_widget.hide()
-        pass
     
-    
+    def get_value(self):
+        detail_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "item__detail")
+        for detail_widget in detail_widgets:
+            if detail_widget.isHidden(): continue
+            else:
+                return detail_widget.get_value()
+        
