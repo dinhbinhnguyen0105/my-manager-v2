@@ -9,7 +9,7 @@ sys.path.append(SRC_DIR)
 from views.utils.widget_handler import WidgetHandler
 
 class Detail(QFrame):
-    event_data = pyqtSignal(dict)
+    event_current_details = pyqtSignal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "dialog__item__details")
@@ -21,7 +21,7 @@ class Detail(QFrame):
         main_layout.setAlignment(Qt.AlignTop)
 
         self.real_estate_widget = Realestate(self)
-        self.real_estate_widget.event_payload_changed.connect(lambda e: print(e))
+        self.real_estate_widget.event_payload_changed.connect(lambda e: self.event_current_details.emit(e))
         
         main_layout.addWidget(self.real_estate_widget)
     

@@ -9,7 +9,7 @@ sys.path.append(SRC_DIR)
 from views.utils.widget_handler import WidgetHandler
 
 class Options(QFrame):
-    event_current_option = pyqtSignal(str)
+    event_current_option = pyqtSignal(dict)
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setProperty("class", "dialog__item__options")
@@ -79,7 +79,7 @@ class Options(QFrame):
         for option_widget in option_widgets:
             if option_widget.property("user-data") == option:
                 WidgetHandler.add_class(option_widget, "activated")
-                self.event_current_option.emit(option)
+                self.event_current_option.emit({ "option": option})
                 return True
             
     def on_option_clicked(self, current_widget):
@@ -87,7 +87,7 @@ class Options(QFrame):
         if activated_button_widgets:
             WidgetHandler.remove_class(activated_button_widgets[0], "activated")
         WidgetHandler.add_class(current_widget, "activated")
-        self.event_current_option.emit(current_widget.property("user-data"))
+        self.event_current_option.emit({ "option": current_widget.property("user-data")})
         self.setStyleSheet(self.styleSheet())
     
     def get_value(self):

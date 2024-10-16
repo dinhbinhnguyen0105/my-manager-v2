@@ -29,8 +29,8 @@ class Basic(QFrame):
     def set_value(self, payload):
         now = datetime.datetime.now()
         if "option" in payload.keys() and "type" in payload.keys():
-            date = f"{now.strftime('%m')}{now.strftime('%d')}{now.strftime('%y')}.{int(now.strftime('%S'))* randint}"
             randint = random.randint(0, 100)
+            date = f"{now.strftime('%m')}{now.strftime('%d')}{now.strftime('%y')}.{int(now.strftime('%S'))* randint}"
             if payload["option"] == "real-estate": option = "RE"
             elif payload["option"] == "fashion": option = "FASHION"
             elif payload["option"] == "food": option = "FOOD"
@@ -38,13 +38,15 @@ class Basic(QFrame):
             elif payload["option"] == "miscellaneous": option = "MISC"
             self.id_widget.setText(f"{option}.{payload['type']}.{date}".upper())
         else: raise CustomError("invalid option or type")
+
         date = f"{now.strftime('%m')}-{now.strftime('%d')}-{now.strftime('%y')}"
         self.date_widget.setText(date)
+
     def get_value(self):
-        return [
-            ("date", self.date_widget.text())
-            ("id", self.id.text())
-        ]
+        return {
+            "date": self.date_widget.text(),
+            "id": self.id.text(),
+        }
 
 class CustomError(Exception):
     pass

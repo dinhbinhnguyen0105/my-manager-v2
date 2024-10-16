@@ -94,7 +94,7 @@ class Location(QFrame):
         main_layout.addWidget(self.street_widget, 1, 1, 1, 3)
     
     def showEvent(self, e):
-        self.set_data()
+        self.event_current_location.emit(self.data)
     
     def set_data(self, current_widget):
         self.data = {

@@ -22,7 +22,14 @@ class Detail(QFrame):
         self.setLayout(main_layout)
         main_layout.setAlignment(Qt.AlignTop)
 
-        self.data = {}
+        self.data = {
+            "area": "",
+            "construction": "",
+            "function": "",
+            "furniture": "",
+            "legal": "",
+            "price": ""
+        }
 
         self.area_widget = Lineedit({
             "class": "real-estate__detail real-estate__detail__area",
@@ -30,7 +37,7 @@ class Detail(QFrame):
             "user-data": "area",
             "label": "Area: ",
         }, self)
-        _ = partial(self.set_payload, self.area_widget)
+        _ = partial(self.set_data, self.area_widget)
         self.area_widget.lineedit_widget.textChanged.connect(_)
         self.construction_widget = Lineedit({
             "class": "real-estate__detail real-estate__detail__construction",
@@ -38,7 +45,7 @@ class Detail(QFrame):
             "user-data": "construction",
             "label": "Construction: ",
         }, self)
-        _ = partial(self.set_payload, self.construction_widget)
+        _ = partial(self.set_data, self.construction_widget)
         self.construction_widget.lineedit_widget.textChanged.connect(_)
         self.function_widget = Lineedit({
             "class": "real-estate__detail real-estate__detail__function",
@@ -46,7 +53,7 @@ class Detail(QFrame):
             "user-data": "function",
             "label": "Function: ",
         }, self)
-        _ = partial(self.set_payload, self.function_widget)
+        _ = partial(self.set_data, self.function_widget)
         self.function_widget.lineedit_widget.textChanged.connect(_)
         self.furniture_widget = Combobox({
             "class": "real-estate__detail real-estate__detail__furniture",
@@ -59,7 +66,7 @@ class Detail(QFrame):
                 ("Full", "full"),
             ]
         }, self)
-        _ = partial(self.set_payload, self.furniture_widget)
+        _ = partial(self.set_data, self.furniture_widget)
         self.furniture_widget.combobox_widget.currentIndexChanged.connect(_)
         self.legal_widget = Combobox({
             "class": "real-estate__detail real-estate__detail__legal",
@@ -76,7 +83,7 @@ class Detail(QFrame):
                 ("Sổ xây dựng riêng", "srxd"),
             ]
         }, self)
-        _ = partial(self.set_payload, self.legal_widget)
+        _ = partial(self.set_data, self.legal_widget)
         self.legal_widget.combobox_widget.currentIndexChanged.connect(_)
         self.price_widget = Lineedit({
             "class": "real-estate__detail real-estate__detail__price",
@@ -84,7 +91,7 @@ class Detail(QFrame):
             "user-data": "price",
             "label": "Price: ",
         }, self)
-        _ = partial(self.set_payload, self.price_widget)
+        _ = partial(self.set_data, self.price_widget)
         self.price_widget.lineedit_widget.textChanged.connect(_)
 
         main_layout.addWidget(self.area_widget, 0, 0, 1, 1)
@@ -94,7 +101,10 @@ class Detail(QFrame):
         main_layout.addWidget(self.legal_widget, 2, 0, 1, 1)
         main_layout.addWidget(self.price_widget, 2, 1, 1, 1)
     
-    def set_payload(self, current_widget):
+    def showEvent(self, e):
+        self.event_current_detail.emit(self.data)
+    
+    def set_data(self, current_widget):
         self.data = {
             **self.data,
             **{ current_widget.property("user-data") : current_widget.get_value()}

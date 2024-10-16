@@ -22,21 +22,32 @@ class Item(QDialog):
         self.setLayout(main_layout)
         main_layout.setAlignment(Qt.AlignTop)
 
+        self.data = {}
+
         self.options_widget = Options(self)
         self.image_widget = Image(self)
         self.detail_widget = Detail(self)
         self.basic_widget = Basic(self)
         self.options_widget.event_current_option.connect(self.set_details)
-        self.detail_widget.real_estate_widget.type_widget.event_current_type.connect(self.set_basic)
+        self.options_widget.event_current_option.connect(self.set_data)
+        self.detail_widget.event_current_details.connect(self.set_data)
+
+        # self.detail_widget.event_current_details.connect(self.set_basic)
 
         main_layout.addWidget(self.options_widget)
         main_layout.addWidget(self.image_widget)
         main_layout.addWidget(self.basic_widget)
         main_layout.addWidget(self.detail_widget)
-
-    def set_basic(self):
-
-        pass
+    
+    def set_data(self, payload):
+        self.data = {
+            **self.data,
+            **payload
+        }
+        self.basic_widget.set_value({
+            "option": self.data.get("option"),
+            "type": self.data.get("type")
+        })
     
     def set_details(self, option):
         self.detail_widget.set_detail(option)
