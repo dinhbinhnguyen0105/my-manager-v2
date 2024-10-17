@@ -33,6 +33,10 @@ class Search(QFrame):
         self.search_expand_widget.event_current_value.connect(self.set_data)
 
         main_layout.addWidget(self.search_base_widget)
+        h_line = QFrame()
+        h_line.setFrameShape(QFrame.HLine)
+        h_line.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(h_line)
         main_layout.addWidget(self.search_expand_widget)
     
     def set_data(self, payload):

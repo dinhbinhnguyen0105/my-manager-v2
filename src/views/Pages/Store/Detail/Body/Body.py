@@ -26,6 +26,7 @@ class Body(QFrame):
             "id": "store__detail__images"
         })
         self.images_widget.setFixedSize(300, 200)
+        self.images_widget.hide()
         self.title_widget = Lineedit({
             "class": "detail__body__title",
             "id": "store__detail__title"

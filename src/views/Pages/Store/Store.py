@@ -1,15 +1,16 @@
 import os, sys
-from PyQt5.QtWidgets import QHBoxLayout, QFrame
+from PyQt5.QtWidgets import QHBoxLayout, QFrame, QPushButton
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 
-from List.List import List
-from Detail.Detail import Detail
+from .List.List import List
+from .Detail.Detail import Detail
 
 MY_DIR = os.path.abspath(os.path.dirname(__file__))
 SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir,os.path.pardir, ))
 ASSETS_DIR = os.path.abspath(os.path.join(SRC_DIR, os.path.pardir, "assets"))
 sys.path.append(SRC_DIR)
+from views.Dialogs.ItemDialog.ItemDialog import ItemDialog
 from views.utils.widget_handler import WidgetHandler
 from logic.utils.temp_handle import TemplateHandler
 from logic.utils.product_handler import ProductHandler
@@ -17,13 +18,16 @@ from logic.utils.product_handler import ProductHandler
 class Store(QFrame):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setProperty("class", "store")
-        self.setObjectName("store")
+        self.setProperty("class", "page__store page")
+        self.setProperty("user-data", "store")
+        self.setObjectName("page__store")
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(0,0,0,0)
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
         main_layout.setAlignment(Qt.AlignTop)
+
+        self.id_product = None
 
         self.list_widget = List(self)
         self.set_current_item()
@@ -31,9 +35,18 @@ class Store(QFrame):
         self.detail_widget.setFixedWidth(300)
         self.detail_widget.header_widget.set_disable(True)
         self.detail_widget.footer_widget.set_disable(True)
-        # self.detail_widget.body_widget.images_widget.setFixedSize(self.detail_widget.width(), 200)
+
+        self.detail_widget.header_widget.add_btn_widget.clicked.connect(self.on_add_clicked)
+        self.detail_widget.header_widget.edit_btn_widget.clicked.connect(self.on_edit_clicked)
+        self.detail_widget.header_widget.status_btn_widget.clicked.connect(self.on_status_clicked)
+        self.detail_widget.header_widget.delete_btn_widget.clicked.connect(self.on_delete_clicked)
+        
 
         main_layout.addWidget(self.list_widget)
+        v_line = QFrame()
+        v_line.setFrameShape(QFrame.VLine)
+        v_line.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(v_line)
         main_layout.addWidget(self.detail_widget)
     
     def set_current_item(self):
@@ -58,6 +71,10 @@ class Store(QFrame):
                     "title": product.get("title"),
                     "description": product.get("description")
                 })
+                self.id_product = index.data().lower()
+                if len(imgs_of_product_path):
+                    self.detail_widget.body_widget.images_widget.show()
+                else: self.detail_widget.body_widget.images_widget.hide()
                 if status == "available":
                     block_icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "block.svg")))
                     self.detail_widget.header_widget.status_btn_widget.setProperty("class", "detail__header__btn detail__header__status-btn detail__header__status-btn--block")
@@ -69,6 +86,16 @@ class Store(QFrame):
                     self.detail_widget.header_widget.status_btn_widget.setIcon(check_icon)
                 self.setStyleSheet(self.styleSheet())
 
+    def on_add_clicked(self):
+        self.item_dialog = ItemDialog(self)
+        self.item_dialog.show()
+
+    def on_edit_clicked(self):
+        # self.id_product
+        pass
+    def on_status_clicked(self):
+        pass
+    def on_delete_clicked(self): pass
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication

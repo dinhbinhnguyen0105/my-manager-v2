@@ -14,8 +14,8 @@ class TemplateHandler():
     
     @staticmethod
     def get_template(payload):
-        if "option" not in payload.keys(): raise CustomError( "'option' not in payload.keys()")
-        else: template_obj = TemplateHandler._read_template(payload["option"])
+        if "options" not in payload.keys(): raise CustomError( "'option' not in payload.keys()")
+        else: template_obj = TemplateHandler._read_template(payload["options"])
         if "action" not in payload.keys(): raise CustomError( "'action' not in payload.keys()")
         else: _action = payload["action"] # defaul | random
         
@@ -39,9 +39,10 @@ class TemplateHandler():
         else: product_info = payload["product_info"]
         if "action" not in payload.keys(): raise CustomError( "'action' not in payload.keys()")
         else: action = payload["action"]
-        if "option" not in product_info.keys(): raise CustomError( "'option' not in payload.keys()")
-        if product_info["option"] == "real-estate":
-            template = TemplateHandler.get_template({ "option": product_info["option"], "action": action })
+        print(product_info)
+        if "options" not in product_info.keys(): raise CustomError( "'option' not in payload.keys()")
+        if product_info["options"] == "real-estate":
+            template = TemplateHandler.get_template({ "options": product_info["options"], "action": action })
             new_product_info = {}
             for key in product_info.keys():
                 new_product_info[key] = product_info[key]
@@ -72,7 +73,7 @@ class TemplateHandler():
                     if product_info[key] == "sell": new_product_info[key] = "bán"
                     elif product_info[key] == "rent": new_product_info[key] = "cho thuê"
                     elif product_info[key] == "assignment": new_product_info[key] = "sang nhượng"
-                if key == "category":
+                if key == "categories":
                     if product_info[key] == "house": new_product_info[key] = "nhà"
                     elif product_info[key] == "shophouse": new_product_info[key] = "nhà mặt tiền"
                     elif product_info[key] == "villa": new_product_info[key] = "villa (biệt thự)"
@@ -109,7 +110,7 @@ class TemplateHandler():
                 if product_info["type"] == "rent" or product_info["type"] == "assignment":
                     if "{legal}" in des:template["description"].pop(index)
                     if "{area}" in des:template["description"].pop(index)
-                if product_info["category"] in ["apartment", "land", "retailspace", "workshop", ]:
+                if product_info["categories"] in ["apartment", "land", "retailspace", "workshop", ]:
                     if "{construction}" in des: template["description"].pop(index)
             template["description"] = "\n".join(template["description"])
 
@@ -129,7 +130,7 @@ class TemplateHandler():
             
             template["title"] = template["title"].upper()
             return template
-        elif product_info["option"] == "miscellaneous": CustomError("invalid option")
+        elif product_info["options"] == "miscellaneous": CustomError("invalid option")
         else: raise("invalid option")
 class CustomError(Exception):
     pass
@@ -138,7 +139,7 @@ if __name__ == "__main__":
     TemplateHandler.render_content({
         "action": "default",
         "product_info": {
-                "option": "real-estate",
+                "options": "real-estate",
                 "images": [
                     "/Users/dinhbinh/Dev/my-manager/my-manager/bin/db/real-estate/images/re.s.100924.5244/re.s.100924.5244_0.png",
                     "/Users/dinhbinh/Dev/my-manager/my-manager/bin/db/real-estate/images/re.s.100924.5244/re.s.100924.5244_1.png",
@@ -153,7 +154,7 @@ if __name__ == "__main__":
                 "ward": "ward_11",
                 "street": "ph\u1ea1m h\u1ed3ng th\u00e1i",
                 "type": "sell",
-                "category": "house",
+                "categories": "house",
                 "building_line": "car",
                 "area": 87.75,
                 "construction": "1 h\u1ea7m, 1 tr\u1ec7t, 3 l\u1ea7u",

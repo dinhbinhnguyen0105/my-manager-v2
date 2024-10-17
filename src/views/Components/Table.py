@@ -91,8 +91,8 @@ class Table(QFrame):
                         text = str(row.get(user_data))
                         if key == "id" or\
                             key == "type" or\
-                            key == "category" or\
-                            key == "building_line" or\
+                            key == "categories" or\
+                            key == "buildingline" or\
                             key == "furniture" or\
                             key == "legal" :
                             text = text.upper()

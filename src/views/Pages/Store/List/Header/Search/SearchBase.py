@@ -18,7 +18,7 @@ class SearchBase(QFrame):
         main_layout.setContentsMargins(0,0,0,0)
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
-        main_layout.setAlignment(Qt.AlignTop)
+        main_layout.setAlignment(Qt.AlignCenter)
 
         self.id_input_widget = Lineedit({
             "id": "header__search__id",
@@ -31,7 +31,7 @@ class SearchBase(QFrame):
         self.expand_btn_widget = QPushButton(self)
         self.expand_btn_widget.setProperty("class", "header__search__expand-button header__search__btn")
         self.expand_btn_widget.setObjectName("header__search__expand-button")
-        expand_icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "arrow-down.svg")))
+        expand_icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "arrow-down-1.svg")))
         self.expand_btn_widget.setIcon(expand_icon)
         self.expand_btn_widget.clicked.connect(self.on_expand_btn_clicked)
         self.expand_status = False
@@ -69,9 +69,9 @@ class SearchBase(QFrame):
     def on_expand_btn_clicked(self):
         self.expand_status = not self.expand_status
         if not self.expand_status:
-            icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "arrow-down.svg")))
+            icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "arrow-down-1.svg")))
         else:
-            icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "arrow-up.svg")))
+            icon = QIcon(os.path.abspath(os.path.join(ASSETS_DIR, "icons", "arrow-up-1.svg")))
         self.expand_btn_widget.setIcon(icon)
     
     def on_refresh_btn_clicked(self): pass

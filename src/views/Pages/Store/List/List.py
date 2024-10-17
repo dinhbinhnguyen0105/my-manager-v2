@@ -31,6 +31,10 @@ class List(QFrame):
         self.body = Body(self)
         self.header.options_widget.event_current_value.connect(self.on_options_changed)
         main_layout.addWidget(self.header)
+        h_line = QFrame()
+        h_line.setFrameShape(QFrame.HLine)
+        h_line.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(h_line)
         main_layout.addWidget(self.body)
     
     def on_options_changed(self, payload):
@@ -41,10 +45,10 @@ class List(QFrame):
                 { "user-data" : "type" , "label" : "Type"},
                 { "user-data" : "ward" , "label" : "Ward"},
                 { "user-data" : "street" , "label" : "Street"},
-                { "user-data" : "category" , "label" : "Category"},
+                { "user-data" : "categories" , "label" : "Category"},
                 { "user-data" : "area" , "label" : "Area"},
                 { "user-data" : "price" , "label" : "Price"},
-                { "user-data" : "building_line" , "label" : "Building line"},
+                { "user-data" : "buildingline" , "label" : "Building line"},
                 { "user-data" : "function" , "label" : "Function"},
                 { "user-data" : "furniture" , "label" : "Furniture"},
                 { "user-data" : "legal" , "label" : "Legal"},

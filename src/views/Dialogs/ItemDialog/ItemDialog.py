@@ -2,16 +2,17 @@ import os, sys
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QFrame
 from PyQt5.QtCore import Qt, pyqtSignal
 
-from Options.Options import Options
-from Image.Image import Image
-from Details.Details import Details
-from Action.Action import Action
+from .Options.Options import Options
+from .Image.Image import Image
+from .Details.Details import Details
+from .Action.Action import Action
 
 MY_DIR = os.path.abspath(os.path.dirname(__file__))
 SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir,os.path.pardir,))
 sys.path.append(SRC_DIR)
 from views.Components.Radio import Radio
 from views.utils.widget_handler import WidgetHandler
+from logic.utils.product_handler import ProductHandler
 
 class ItemDialog(QDialog):
     def __init__(self, parent=None):
@@ -28,7 +29,6 @@ class ItemDialog(QDialog):
         self.options_widget = Options(self)
         self.options_widget.event_current_value.connect(self.on_option_changed)
         self.image_widget = Image(self)
-        # self.image_widget.setFixedSize(400, 200)
         self.details_widget = Details(self)
         self.action_widget = Action(self)
         self.action_widget.save_btn_widget.clicked.connect(self.on_save_btn_clicked)
@@ -70,7 +70,13 @@ class ItemDialog(QDialog):
             **details,
             **images,
         }
-        print(data)
+        for key in data.keys():
+            if key == "images": continue
+            elif key == "description": continue
+            elif key == "function" or key == "construction": data[key] == data[key].replace(" ", "")
+            else:
+                data[key] = data[key].lower()
+        ProductHandler.write_product(data)
     
     def set_value(self, payload):
         self.options_widget.set_value(payload.get("options"))

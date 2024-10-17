@@ -1,21 +1,7 @@
-.dialog{
-    
-}
 .dialog__item__options {
-    min-height: 40px;
+    min-height: 46px;
     margin: 4px 0;
 }
-.options__input {
-
-}
-.item__option__real-estate {}
-.item__option__miscellaneous {}
-.item__option__food {}
-.item__option__travel {}
-.item__option__fashion {}
-
-
-
 
 .dialog__item__image {
     margin: 4px 4px;
@@ -36,6 +22,16 @@
     font-size: 16px;
     font-weight: bold;
     color: blue;
+}
+.item__action__save {
+    min-height: 36px;
+    background-color: rgb(0, 145, 255);
+    margin: 8px 4px;
+    padding: 0 12px;
+    border-radius: 4px;
+}
+.item__action__save::pressed {
+    background-color: rgba(0, 145, 255, 0.7);
 }
 
 .radio__option {

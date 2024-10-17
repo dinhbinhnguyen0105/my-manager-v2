@@ -309,20 +309,20 @@ class RealEstate(QFrame):
             category == "retailspace" or\
             category == "workshop":
             self.details_construction_widget.set_value({ "construction" : "" })
-            self.details_construction_widget.setEnabled(False)
-            self.details_function_widget.setEnabled(True)
-            self.details_furniture_widget.setEnabled(True)
+            self.details_construction_widget.setDisabled(True)
+            self.details_function_widget.setDisabled(False)
+            self.details_furniture_widget.setDisabled(False)
         elif category == "land":
             self.details_construction_widget.set_value({ "construction" : "" })
-            self.details_construction_widget.setEnabled(False)
+            self.details_construction_widget.setDisabled(True)
             self.details_function_widget.set_value({ "function" : "" })
-            self.details_function_widget.setEnabled(False)
-            self.details_furniture_widget.setEnabled(False)
+            self.details_function_widget.setDisabled(True)
+            self.details_furniture_widget.setDisabled(True)
         else:
             self.details_construction_widget.set_value({ "construction" : "" })
-            self.details_construction_widget.setEnabled(True)
-            self.details_function_widget.setEnabled(True)
-            self.details_furniture_widget.setEnabled(True)
+            self.details_construction_widget.setDisabled(False)
+            self.details_function_widget.setDisabled(False)
+            self.details_furniture_widget.setDisabled(False)
 
     def set_id(self, _type):
         now = datetime.datetime.now()

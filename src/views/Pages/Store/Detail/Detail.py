@@ -26,7 +26,15 @@ class Detail(QFrame):
         self.footer_widget = Footer(self)
 
         main_layout.addWidget(self.header_widget)
+        h_line = QFrame()
+        h_line.setFrameShape(QFrame.HLine)
+        h_line.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(h_line)
         main_layout.addWidget(self.body_widget)
+        h_line = QFrame()
+        h_line.setFrameShape(QFrame.HLine)
+        h_line.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(h_line)
         main_layout.addWidget(self.footer_widget)
 
 if __name__ == "__main__":

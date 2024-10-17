@@ -30,7 +30,11 @@ class Header(QFrame):
         self.options_widget.event_current_value.connect(self.on_options_changed)
         self.search_widget = Search(self)
         self.search_widget.event_current_value.connect(self.set_data)
+        h_line = QFrame()
+        h_line.setFrameShape(QFrame.HLine)
+        h_line.setFrameShadow(QFrame.Sunken)
         main_layout.addWidget(self.options_widget)
+        main_layout.addWidget(h_line)
         main_layout.addWidget(self.search_widget)
 
     def set_data(self, payload):

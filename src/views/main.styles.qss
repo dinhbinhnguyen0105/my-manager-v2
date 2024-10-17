@@ -1,0 +1,136 @@
+.sidebar {
+    background-color: blue;
+    max-width: 60px;
+    margin: 0;
+    background-color: rgb(0, 145, 255);
+}
+.page-btn{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 60px;
+    font-size: 20px;
+    border-radius: 0px;
+    border: 0px;
+    color: whilte;
+}
+.page-btn.activated{
+    background-color: rgb(17, 113, 217);
+}
+.store__detail {
+    margin: 0px 4px;
+}
+.store__list {
+margin: 0px 4px;
+}
+.store__list__header {
+    margin: 4px 0;
+}
+.store__list__body {
+    margin: 4px 0;
+}
+.header__search__base {
+    max-height: 52px;
+    margin-bottom: 4px;
+}
+.header__search__input {
+    max-height: 44px;
+}
+.header__search__btn {
+    min-height: 24px;
+    min-width: 24px;
+    max-height: 24px;
+    max-width: 24px;
+    border: 2px solid #979797;
+    margin: 8px 4px;
+    border-radius: 12px;
+}
+
+.detail__header__btn {
+    margin: 8px 0px;
+    min-width: 24px;
+    min-height: 24px;
+    border-radius: 12px;
+}
+.detail__header__btn::pressed {
+    background-color: rgb(17, 113, 217);
+}
+.detail__header__add-btn::hover {
+    background-color: rgb(153, 232, 168);
+}
+.detail__header__add-btn::pressed {
+    background-color: rgba(153, 232, 168, 0.7);
+}
+.detail__header__edit-btn::hover {
+    background-color: rgb(16, 123, 206);
+}
+.detail__header__edit-btn::pressed {
+    background-color: rgba(16, 123, 206, 0.7);
+}
+.detail__header__status-btn{
+    margin-right: 8px;
+}
+.detail__header__status-btn::hover {
+    background-color: rgb(253, 116, 29);
+}
+.detail__header__status-btn::pressed {
+    background-color: rgba(253, 116, 29, 0.7);
+}
+.detail__header__check-btn{
+    margin-right: 8px;
+}
+.detail__header__check-btn::hover {
+    background-color: rgb(153, 232, 168);
+}
+.detail__header__check-btn::pressed {
+    background-color: rgba(153, 232, 168, 0.7);
+}
+.detail__header__delete-btn {
+    margin: 0 8px;
+}
+.detail__header__delete-btn:hover{
+    background-color: rgb(255, 33, 18);
+}
+.detail__header__delete-btn:pressed{
+    background-color: rgba(255, 33, 18, .7);
+}
+.detail__footer__default-btn, .detail__footer__random-btn {
+    min-height: 36px;
+    border: 1px solid #979797;
+    margin: 8px 4px;
+    padding: 0 12px;
+    border-radius: 4px;
+}
+.detail__footer__default-btn::pressed, .detail__footer__random-btn::pressed {
+    background-color: rgb(17, 113, 217);
+}
+
+.radio__option {
+    min-height: 36px;
+    border: 1px solid #979797;
+    margin: 8px 4px;
+    padding: 0 12px;
+    border-radius: 4px;
+}
+.activated {
+    color: rgb(0, 145, 255);
+    border: 1px solid rgb(0, 145, 255);
+}
+.label {
+    height: 14px;
+    margin-top: 12px;
+    font-size: 10px;
+    color: rgb(0, 145, 255);
+}
+.lineedit {
+    margin: 0 2px;
+    border-radius: 4px;
+    height: 24px;
+    border: 1px solid darkgray;
+}
+.plaintext {
+    min-height: 5em;
+    margin: 4px 4px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}

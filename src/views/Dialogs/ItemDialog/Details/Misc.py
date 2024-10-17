@@ -63,7 +63,7 @@ class Misc(QFrame):
         now = datetime.datetime.now()
         randint = random.randint(0, 100)
         id = f"{now.strftime('%m')}{now.strftime('%d')}{now.strftime('%y')}.{int(now.strftime('%S'))* randint}"
-        self.id_widget.setText(f"RE.{id}".upper())
+        self.id_widget.setText(f"MISC.{id}".upper())
 
     def set_date(self,):
         now = datetime.datetime.now()
