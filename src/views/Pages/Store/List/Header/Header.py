@@ -127,7 +127,11 @@ class Header(QFrame):
                     "user-data": "desciption"
                 },
             ]
+        else: raise CustomError("Invalid option")
         self.search_widget.search_expand_widget.set_input_widgets(input_widget_info)
+
+class CustomError(Exception):
+    pass
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication

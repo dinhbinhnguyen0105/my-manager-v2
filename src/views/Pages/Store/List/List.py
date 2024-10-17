@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QVBoxLayout, QFrame
 from PyQt5.QtCore import Qt
 from functools import partial
 
-from Header.Header import Header
-from Body.Body import Body
+from .Header.Header import Header
+from .Body.Body import Body
 
 MY_DIR = os.path.abspath(os.path.dirname(__file__))
 SRC_DIR = os.path.abspath(os.path.join(MY_DIR, os.path.pardir,os.path.pardir,os.path.pardir, os.path.pardir))
@@ -12,6 +12,7 @@ ASSETS_DIR = os.path.abspath(os.path.join(SRC_DIR, os.path.pardir, "assets"))
 sys.path.append(SRC_DIR)
 
 from views.utils.widget_handler import WidgetHandler
+from logic.utils.product_handler import ProductHandler
 
 class List(QFrame):
     def __init__(self, parent=None):
@@ -24,41 +25,60 @@ class List(QFrame):
         self.setLayout(main_layout)
         main_layout.setAlignment(Qt.AlignTop)
 
-        self.search_payload = {}
+        self.filter_payload = {}
 
         self.header = Header(self)
         self.body = Body(self)
-        self.header.options_widget.event_current_value.connect(self.set_body_table)
-        self.set_body_table()
-        # self.header.options_widget.event_option_active_changed.connect(self.set_body_table)
+        self.header.options_widget.event_current_value.connect(self.on_options_changed)
         main_layout.addWidget(self.header)
         main_layout.addWidget(self.body)
     
-    def set_body_table(self, option=False):
-        print(self.header.get_value())
-        return
-        if not option: option = self.header.get_value().get("options")
-        self.body.set_table(option)
-        self.body.table.clear_filter()
-        # input_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "header__search__input")
-        # for input_widget in input_widgets:
-        #     _ = partial(self.set_search_payload, input_widget)
-        #     input_widget.lineedit_widget.setText("")
-        # self.handle_search_payload_changed()
+    def on_options_changed(self, payload):
+        if payload.get("options") == "real-estate":
+            headers = [
+                { "user-data" : "date" , "label" : "Date"},
+                { "user-data" : "id" , "label" : "ID"},
+                { "user-data" : "type" , "label" : "Type"},
+                { "user-data" : "ward" , "label" : "Ward"},
+                { "user-data" : "street" , "label" : "Street"},
+                { "user-data" : "category" , "label" : "Category"},
+                { "user-data" : "area" , "label" : "Area"},
+                { "user-data" : "price" , "label" : "Price"},
+                { "user-data" : "building_line" , "label" : "Building line"},
+                { "user-data" : "function" , "label" : "Function"},
+                { "user-data" : "furniture" , "label" : "Furniture"},
+                { "user-data" : "legal" , "label" : "Legal"},
+            ]
+        elif payload.get("options") == "miscellaneous":
+            headers = [
+                { "user-data" : "id" , "label" : "ID"},
+                { "user-data" : "title" , "label" : "title"},
+                { "user-data" : "description" , "label" : "description"},
+            ]
+        else: raise CustomError("Invalid option")
+        data = ProductHandler.read(payload.get("options"))
 
-    def handle_search_payload_changed(self):
+        self.body.table.set_model({ "headers" : headers, "data" : data })
+        self.body.table.clear_filter()
+
+        self.filter_payload = {}
         input_widgets = WidgetHandler.find_widgets_by_class(self, QFrame, "header__search__input")
         for input_widget in input_widgets:
-            _ = partial(self.set_search_payload, input_widget)
-            input_widget.lineedit_widget.textChanged.connect(_)
+            input_widget.event_current_value.connect(self.set_filter_payload)
     
-    def set_search_payload(self, input_widget, e):
-        self.search_payload[input_widget.property("user-data")] = e
-        _ = []
-        for key in self.search_payload.keys():
-            _.append((key, self.search_payload[key]))
-        self.body.table.filter_table(_)
+    def set_filter_payload(self, payload):
+        self.filter_payload = {
+            **self.filter_payload,
+            **payload
+        }
+        list_of_filter = []
+        for key, value in self.filter_payload.items():
+            list_of_filter.append({ key : value})        
+        self.body.table.filter_table(list_of_filter)
+    
 
+class CustomError(Exception):
+    pass
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication

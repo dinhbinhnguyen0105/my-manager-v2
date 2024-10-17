@@ -41,8 +41,8 @@ class Body(QFrame):
     
     def set_value(self, payload):
         if "images" in payload.keys(): self.images_widget.set_value(payload.get("images"))
-        if "title" in payload.keys(): self.title_widget.set_value(payload.get("title"))
-        if "description" in payload.keys(): self.description_widget.set_value(payload.get("description"))
+        if "title" in payload.keys(): self.title_widget.set_value({ "text" : payload.get("title")})
+        if "description" in payload.keys(): self.description_widget.set_value({ "text" : payload.get("description")})
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication

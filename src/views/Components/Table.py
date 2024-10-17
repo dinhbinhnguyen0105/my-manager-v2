@@ -76,10 +76,11 @@ class Table(QFrame):
         self.headers = payload.get("headers")
         self.data = payload.get("data")
         self.model.clear()
-        self.model.setHorizontalHeaderLabels([headers[1].title() for headers in payload.get("headers")])
+        self.model.setHorizontalHeaderLabels([headers.get("label").title() for headers in payload.get("headers")])
+
         for row in payload.get("data"):
             items = []
-            header_user_data = [headers[0] for headers in payload.get("headers")]
+            header_user_data = [headers.get("user-data") for headers in payload.get("headers")]
             while len(header_user_data):
                 user_data = header_user_data.pop(0)
                 if "status" in row.keys() and row.get("status") == "unavailable": is_available = False
@@ -111,18 +112,22 @@ class Table(QFrame):
         while len(payload):
             _filter = payload.pop(0)
             for index, header in enumerate(self.headers):
+                print()
                 if _filter[0] == header[0]:
+                    self.proxy_model.setFilterForColumn(index, _filter[1])
+        
+    def filter_table(self, payload:list):
+        while len(payload):
+            # _filter = 
+            _filter = next(iter(payload.pop(0).items()))
+            for index, header in enumerate(self.headers):
+                _header = next(iter(header.items()))
+                if _filter[0] == _header[1]:
                     self.proxy_model.setFilterForColumn(index, _filter[1])
 
     def clear_filter(self):
         for index in range(self.proxy_model.columnCount()):
             self.proxy_model.setFilterForColumn(index, '')
-
-    # self.table_view.selectionModel().currentChanged.connect(self.on_current_changed)
-    # def on_current_changed(self, cur, prev):
-    #     print(f"current: row[{cur.row()}] - col[{cur.column()}]")
-    #     print(f"prev: row[{prev.row()}] - col[{prev.column()}]")
-        
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication

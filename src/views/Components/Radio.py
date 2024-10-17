@@ -36,6 +36,7 @@ class Radio(QFrame):
             if index == 0: WidgetHandler.add_class(radio_widget, "activated")
             if radio.get("user-data"): radio_widget.setProperty("user-data", radio.get("user-data"))
             if radio.get("label"): radio_widget.setText(radio.get("label"))
+            if radio.get("is-disable"): radio_widget.setEnabled(False)
             _ = partial(self.on_option_clicked, radio_widget)
             radio_widget.clicked.connect(_)
             self.layout().addWidget(radio_widget)       

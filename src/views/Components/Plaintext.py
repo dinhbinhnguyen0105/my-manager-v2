@@ -24,14 +24,17 @@ class Plaintext(QFrame):
             main_layout.addWidget(label)
         self.input_widget = QPlainTextEdit(self)
         self.input_widget.setProperty("class", "plaintext")
-        self.input_widget.textChanged.connect(lambda e: self.event_current_value.emit(self.get_value()))
+        self.input_widget.textChanged.connect(lambda : self.event_current_value.emit(self.get_value()))
         if payload.get("place-holder"): self.input_widget.setPlaceholderText(payload.get("place-holder"))
         main_layout.addWidget(self.input_widget)
+
     def showEvent(self, e):
         self.event_current_value.emit(self.get_value())
+
     def set_value(self, payload):
         for value in payload.values():
-            self.input_widget.setText(value)
+            self.input_widget.setPlainText(value)
+            return
     def get_value(self):
         return {
             self.property("user-data") : self.input_widget.toPlainText()

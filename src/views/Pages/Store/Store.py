@@ -28,6 +28,7 @@ class Store(QFrame):
         self.list_widget = List(self)
         self.set_current_item()
         self.detail_widget = Detail(self)
+        self.detail_widget.setFixedWidth(300)
         self.detail_widget.header_widget.set_disable(True)
         self.detail_widget.footer_widget.set_disable(True)
         # self.detail_widget.body_widget.images_widget.setFixedSize(self.detail_widget.width(), 200)
@@ -45,7 +46,7 @@ class Store(QFrame):
         for index in selected.indexes():
             if index.data(Qt.UserRole).lower() == "id":
                 options_widget = WidgetHandler.find_widget_by_id(self, QFrame, "list__header__options")
-                product_info = ProductHandler.get_product_buy_id({ "option": options_widget.get_value(), "id": index.data().lower()})
+                product_info = ProductHandler.get_product_buy_id({ **options_widget.get_value(), "id": index.data().lower()})
                 product = TemplateHandler.render_content({ "action": "default", "product_info": product_info})
                 if "images" not in product_info.keys(): imgs_of_product_path = []
                 else: imgs_of_product_path = ProductHandler.get_images_buy_path(product_info["images"])

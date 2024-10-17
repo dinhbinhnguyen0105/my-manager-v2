@@ -25,7 +25,7 @@ class Body(QFrame):
             "id": "store__list__table",
         }, self)
         main_layout.addWidget(self.table)
-    
+        
     def set_table(self, option):
         data = ProductHandler.read(option)
         if option == "real-estate":

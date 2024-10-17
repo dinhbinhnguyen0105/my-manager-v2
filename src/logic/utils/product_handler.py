@@ -17,17 +17,18 @@ class ProductHandler():
                 results += value
         return results
     def get_product_buy_id(payload):
-        if "option" not in payload.keys(): raise CustomError("option not in payload.keys()")
+        if "options" not in payload.keys(): raise CustomError("option not in payload.keys()")
         if "id" not in payload.keys(): raise CustomError("id not in payload.keys()")
-        product_path = os.path.abspath(os.path.join(DB_PRODUCTS_DIR, payload["option"], f"{payload['option']}.json"))
+
+        product_path = os.path.abspath(os.path.join(DB_PRODUCTS_DIR, payload["options"], f"{payload['options']}.json"))
         if not os.path.exists(product_path): raise CustomError("product path not exists")
         with open(product_path, "r", encoding="utf8") as f:
             data = json.load(f)
-            if payload["option"] == "real-estate":
+            if payload["options"] == "real-estate":
                 for products in data.values():
                     for product in products:
                         if "id" in product.keys() and product["id"].lower() == payload["id"].lower(): return product
-            elif payload["option"] == "miscellaneous":
+            elif payload["options"] == "miscellaneous":
                 for id in data.keys():
                     if id.lower() == payload["id"].lower(): return data[id]
         raise CustomError("id not in data")

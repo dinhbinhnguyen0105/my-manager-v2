@@ -61,17 +61,20 @@ class Options(QFrame):
                 "class": "item__option__food item__option",
                 "user-data": "food",
                 "label": "food".capitalize(),
+                "is-disable": True,
             },
             {
                 "id": "item__option__travel",
                 "class": "item__option__travel item__option",
                 "user-data": "travel",
                 "label": "travel".capitalize(),
+                "is-disable": True,
             },
             {
                 "id": "item__option__fashion",
                 "class": "item__option__fashion item__option",
                 "user-data": "fashion",
                 "label": "fashion".capitalize(),
+                "is-disable": True,
             },
         ])
