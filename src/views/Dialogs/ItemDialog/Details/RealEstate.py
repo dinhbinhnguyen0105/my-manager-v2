@@ -35,7 +35,7 @@ class RealEstate(QFrame):
         basic_layout = QHBoxLayout()
         basic_layout.setContentsMargins(0,0,0,0)
         basic_layout.setSpacing(0)
-        basic_layout.setAlignment(Qt.AlignTop)
+        basic_layout.setAlignment(Qt.AlignCenter)
 
         self.type_widget = Radio({
             "class": "type__input real-estate__item",

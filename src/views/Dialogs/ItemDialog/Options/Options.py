@@ -18,7 +18,7 @@ class Options(QFrame):
         main_layout.setContentsMargins(0,0,0,0)
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
-        main_layout.setAlignment(Qt.AlignTop)
+        main_layout.setAlignment(Qt.AlignCenter)
 
         self.options_widget = Radio({
             "class": "options__input",
@@ -29,6 +29,8 @@ class Options(QFrame):
         self.options_widget.event_current_value.connect(self.on_option_changed)
         main_layout.addWidget(self.options_widget)
         self.set_options()
+        self.setStyleSheet(self.styleSheet())
+
     
     def on_option_changed(self, e):
         self.event_current_value.emit(e)

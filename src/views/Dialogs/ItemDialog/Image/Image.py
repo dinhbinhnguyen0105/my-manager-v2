@@ -24,7 +24,9 @@ class Image(QFrame):
         self.data = { "images" : ""}
 
         self.dropbox_widget = Dropbox(self)
+        self.dropbox_widget.setProperty("class", "item__image__dropbox")
         self.images_widget = Imagebox({ "class": "item__image__imagebox"}, self)
+        self.images_widget.hide()
         self.dropbox_widget.event_dropped_urls.connect(self.set_value)
         self.dropbox_widget.event_dropped_urls.connect(self.set_data)
         main_layout.addWidget(self.dropbox_widget)
@@ -37,8 +39,12 @@ class Image(QFrame):
         self.event_current_image.emit(self.get_value())
     
     def set_value(self, urls):
-        if len(urls) > 0: self.dropbox_widget.hide()
-        else: self.dropbox_widget.show()
+        if len(urls) > 0:
+            self.dropbox_widget.hide()
+            self.images_widget.show()
+        else:
+            self.dropbox_widget.show()
+            self.images_widget.hide()
         self.images_widget.set_value(urls)
 
     def get_value(self):

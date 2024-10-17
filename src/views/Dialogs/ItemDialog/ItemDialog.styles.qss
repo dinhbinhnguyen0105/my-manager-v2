@@ -1,0 +1,69 @@
+.dialog{
+    
+}
+.dialog__item__options {
+    min-height: 40px;
+    margin: 4px 0;
+}
+.options__input {
+
+}
+.item__option__real-estate {}
+.item__option__miscellaneous {}
+.item__option__food {}
+.item__option__travel {}
+.item__option__fashion {}
+
+
+
+
+.dialog__item__image {
+    margin: 4px 4px;
+}
+.item__image__dropbox {
+    border: 2px dashed #979797;
+    border-radius: 12px;
+    min-width: 390px;
+    min-height: 200px;
+}
+.item__image__imagebox {
+    min-width: 390px;
+    min-height: 200px;
+}
+.id__label, .date__label {
+    margin: 4px 8px;
+    height: 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: blue;
+}
+
+.radio__option {
+    min-height: 36px;
+    border: 1px solid #979797;
+    margin: 8px 4px;
+    padding: 0 12px;
+    border-radius: 4px;
+}
+.activated {
+    color: rgb(0, 145, 255);
+    border: 1px solid rgb(0, 145, 255);
+}
+.label {
+    height: 14px;
+    margin-top: 12px;
+    font-size: 10px;
+    color: rgb(0, 145, 255);
+}
+.lineedit {
+    margin: 0 2px;
+    border-radius: 4px;
+    height: 24px;
+    border: 1px solid darkgray;
+}
+.plaintext {
+    min-height: 5em;
+    margin: 4px 4px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}

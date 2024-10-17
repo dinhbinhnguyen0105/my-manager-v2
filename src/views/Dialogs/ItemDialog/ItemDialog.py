@@ -23,18 +23,36 @@ class ItemDialog(QDialog):
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
         main_layout.setAlignment(Qt.AlignTop)
+        self.setFixedWidth(400)
 
         self.options_widget = Options(self)
         self.options_widget.event_current_value.connect(self.on_option_changed)
         self.image_widget = Image(self)
+        # self.image_widget.setFixedSize(400, 200)
         self.details_widget = Details(self)
         self.action_widget = Action(self)
         self.action_widget.save_btn_widget.clicked.connect(self.on_save_btn_clicked)
 
         main_layout.addWidget(self.options_widget)
+        h_line = QFrame()
+        h_line.setFrameShape(QFrame.HLine)
+        h_line.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(h_line)
         main_layout.addWidget(self.image_widget)
+        h_line = QFrame()
+        h_line.setFrameShape(QFrame.HLine)
+        h_line.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(h_line)
         main_layout.addWidget(self.details_widget)
+        h_line = QFrame()
+        h_line.setFrameShape(QFrame.HLine)
+        h_line.setFrameShadow(QFrame.Sunken)
+        main_layout.addWidget(h_line)
         main_layout.addWidget(self.action_widget)
+
+        with open(os.path.join(MY_DIR, "ItemDialog.styles.qss"), "r") as f:
+            self.my_styles = f.read()
+        self.setStyleSheet(self.my_styles)    
     
     def on_option_changed(self, payload):
         details_widgets = WidgetHandler.find_widgets_by_class(self.details_widget, QFrame, "item__details")

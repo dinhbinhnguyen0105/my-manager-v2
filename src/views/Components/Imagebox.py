@@ -53,7 +53,7 @@ class Imagebox(QFrame):
         for img_widget in img_widgets:
             img_widget.setParent(None)
             img_widget.deleteLater()
-        self.img_count = len(urls)
+        self.images_count = len(urls)
         self.urls = urls
         for url in self.urls:
             img = Image(url, self)
@@ -72,8 +72,8 @@ class Imagebox(QFrame):
         self.prev_point = self.curr_point
         if self.slide < 1:
             self.slide = 1
-        if self.slide > self.img_count:
-            self.slide = self.img_count
+        if self.slide > self.images_count:
+            self.slide = self.images_count
         self.main_widget.setCurrentIndex(self.slide)
 
 class Image(QLabel):
